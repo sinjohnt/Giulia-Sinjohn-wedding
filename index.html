@@ -524,23 +524,25 @@
         document.getElementById("whatsapp-form").addEventListener("submit", function(e) {
             e.preventDefault();
 
-            const name = document.getElementById("guest-name").value;
+            const name = document.getElementById("guest-name").value.trim();
             const attendance = document.getElementById("attendance").value;
-            const dietary = document.getElementById("dietary").value;
+            const dietary = document.getElementById("dietary").value.trim();
 
             const phone = "27606719707"; // SA Phone number format for WhatsApp web link
 
-            let attendanceText = attendance === "will attend" 
-                ? "will attend your wedding celebration!" 
-                : "will not be able to attend your wedding.";
+            const attendanceStatus = (attendance === "will attend")
+                ? "will joyfully attend your wedding celebration!"
+                : "regretfully will not be able to attend your wedding.";
 
-            let message = `Hi Giulia & Sinjohn! %0A%0A${encodeURIComponent(name)} ${encodeURIComponent(attendanceText)}`;
+            // Construct full message string
+            let textMessage = `Hi Giulia & Sinjohn,\n\n${name} ${attendanceStatus}`;
 
-            if (dietary.trim() !== "") {
-                message += `%0A%0ANotes / Dietary Requirements: ${encodeURIComponent(dietary)}`;
+            if (dietary !== "") {
+                textMessage += `\n\nNotes / Dietary Requirements:\n${dietary}`;
             }
 
-            const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
+            // Correctly encode entire text for WhatsApp URL
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(textMessage)}`;
             window.open(whatsappUrl, '_blank');
         });
     </script>
